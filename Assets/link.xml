@@ -1,0 +1,33 @@
+ <linker>
+    <assembly fullname="AWSSDK.Core">
+        <type fullname="Amazon.*" preserve="all" />
+        <namespace fullname="Amazon.Util.Internal.PlatformServices" preserve="all" />
+    </assembly>
+    <assembly fullname="AWSSDK.S3">
+        <type fullname="Amazon.*" preserve="all" />
+        <namespace fullname="Amazon.Util.Internal.PlatformServices" preserve="all" />
+    </assembly>
+    <assembly fullname="AWSSDK.Lambda">
+        <type fullname="Amazon.*" preserve="all" />
+        <namespace fullname="Amazon.Util.Internal.PlatformServices" preserve="all" />
+    </assembly>
+    <assembly fullname="AWSSDK.SecurityToken">
+        <type fullname="Amazon.*" preserve="all" />
+        <namespace fullname="Amazon.Util.Internal.PlatformServices" preserve="all" />
+    </assembly>
+    <assembly fullname="AWSSDK.CognitoIdentity">
+        <type fullname="Amazon.*" preserve="all" />
+        <namespace fullname="Amazon.Util.Internal.PlatformServices" preserve="all" />
+    </assembly>
+    <assembly fullname="AWSSDK.CognitoIdentityProvider">
+        <type fullname="Amazon.*" preserve="all" />
+        <namespace fullname="Amazon.Util.Internal.PlatformServices" preserve="all" />
+    </assembly>
+    <assembly fullname="Amazon.Extensions.CognitoAuthentication">
+        <type fullname="Amazon.*" preserve="all" />
+        <namespace fullname="Amazon.Util.Internal.PlatformServices" preserve="all" />
+    </assembly>
+    <assembly fullname="System.Core">
+        <type fullname="System.Linq.Expressions.Interpreter.LightLambda" preserve="all" />
+    </assembly>
+ </linker>
