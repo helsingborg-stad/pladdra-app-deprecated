@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace pladdra_app.Assets.Scripts.Data
 {
-    public class WebResourceManager {
+    public class WebResourceManager: IWebResourceManager {
         [Serializable]
         public class CacheEntry {
             public Dictionary<string, string> Headers {get; set; }
@@ -77,6 +77,22 @@ namespace pladdra_app.Assets.Scripts.Data
                     }
                 }
             }
+        }
+
+        public async Task<Dictionary<string, string>> GetResourcePaths(IEnumerable<string> urls)
+        {
+            var uniqueUrls = urls
+                .Where(url => !string.IsNullOrEmpty(url))
+                .UniqueBy(url => url)
+                .ToList();
+
+            var mapping = new Dictionary<string, string>();
+            await Task.WhenAll(uniqueUrls.Select(async url => {
+                var path = await GetResourcePath(url);
+                mapping.Add(url, path);
+            }));
+
+            return mapping;
         }
 
         protected string GetCachePath (string url ) {
