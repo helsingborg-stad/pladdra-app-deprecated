@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using pladdra_app.Assets.Scripts.Data;
 using pladdra_app.Assets.Scripts.Data.Dialogs;
+using pladdra_app.Assets.Scripts.Entities;
+using pladdra_app.Assets.Scripts.Entities;
 using UnityEngine;
 
 namespace pladdra_app.Assets.Scripts.ExampleScreens
@@ -30,18 +32,27 @@ namespace pladdra_app.Assets.Scripts.ExampleScreens
                 var project = await Repository.Load();
 
                 var paths = await wrm.GetResourcePaths(project.Resources.Select(resource => resource.Url));
-                return paths;
+
+                foreach(var kv in paths) {
+                    Debug.Log($"{kv.Key} => {kv.Value}");
+                }
+
+                var pladdraObjects = project.Resources
+                    .Where(resource => paths.ContainsKey(resource.Url))
+                    .Select(resource => new Pladdra3dModel(paths[resource.Url]))
+                    .ToArray();
+
+                return pladdraObjects;
             });
 
             while (!task.IsCompleted) {
                 yield return new WaitForSeconds(1);
             }
 
-            foreach(var kv in task.Result) {
-                Debug.Log($"{kv.Key} => {kv.Value}");
-            }
 
-            GetComponentInParent<ScreenManager>().SetActiveScreen<WorkspaceScreen>();
+            GetComponentInParent<ScreenManager>().SetActiveScreen<WorkspaceScreen>(
+                beforeActivate: screen => screen.SetPladdraObjects(task.Result)
+            );
         }
 
     }
