@@ -34,7 +34,7 @@ namespace pladdra_app.Assets.Scripts.Data.Dialogs
 
         public Task<DialogProject> Load() => Task.FromResult(new DialogProject() {
                 Id = "dialog-1",
-                Resources = SampleModels.Select(url => new DialogResource{Url = url}).ToList()
+                Resources = SampleModels.Select(url => new DialogResource{Url = url, Type = "model"}).ToList()
         });
     }
 }

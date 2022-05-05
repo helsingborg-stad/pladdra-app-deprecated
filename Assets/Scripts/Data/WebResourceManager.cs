@@ -41,7 +41,6 @@ namespace pladdra_app.Assets.Scripts.Data
 
         private static object _lock = new object();
         private CacheIndex _cacheIndex = null;
-        public WebResourceManager(): this(Application.temporaryCachePath) {}
         public WebResourceManager(string tempPath) {
             TempPath = tempPath;
         }
@@ -85,11 +84,21 @@ namespace pladdra_app.Assets.Scripts.Data
                 .Where(url => !string.IsNullOrEmpty(url))
                 .UniqueBy(url => url)
                 .ToList();
+                
+            Debug.Log($"[WebResourceManager] the urls are...");   
+            foreach (var url in uniqueUrls) {
+                Debug.Log($"[WebResourceManager] -- {url}");   
+            }
 
             var mapping = new Dictionary<string, string>();
             await Task.WhenAll(uniqueUrls.Select(async url => {
+                Debug.Log($"[WebResourceManager] fetching {url}...");
                 var path = await GetResourcePath(url);
-                mapping.Add(url, path);
+                Debug.Log($"[WebResourceManager] done fetching {url}");
+                lock (mapping) {
+                    mapping[url] = path;
+                }
+                Debug.Log($"[WebResourceManager] {url} -> {path}");
             }));
 
             return mapping;
