@@ -10,7 +10,8 @@ using UnityEngine;
 namespace pladdra_app.Assets.Scripts.ExampleScreens
 {
 
-    public class LoadProjectsScreen: Screen {
+    public class LoadProjectsScreen : Screen
+    {
         public IDialogProjectRepository Repository { get; set; }
 
         public LoadProjectsScreen(IDialogProjectRepository repository)
@@ -18,34 +19,39 @@ namespace pladdra_app.Assets.Scripts.ExampleScreens
             Repository = repository;
         }
 
-        public LoadProjectsScreen(): this(new SampleDialogProjectRepository(Application.temporaryCachePath))
+        public LoadProjectsScreen() : this(new SampleDialogProjectRepository(Application.temporaryCachePath))
         {
         }
 
-        private void Start() {
+        private void Start()
+        {
             StartCoroutine(LoadProjectAndResources());
         }
 
-        private IEnumerator LoadProjectAndResources() {
+        private IEnumerator LoadProjectAndResources()
+        {
             var wrm = new WebResourceManager();
-            var task = Task.Run(async () => {
+            var task = Task.Run(async () =>
+            {
                 var project = await Repository.Load();
 
                 var paths = await wrm.GetResourcePaths(project.Resources.Select(resource => resource.Url));
 
-                foreach(var kv in paths) {
+                foreach (var kv in paths)
+                {
                     Debug.Log($"{kv.Key} => {kv.Value}");
                 }
 
                 var pladdraObjects = project.Resources
                     .Where(resource => paths.ContainsKey(resource.Url))
-                    .Select(resource => new Pladdra3dModel(paths[resource.Url]))
+                    .Select(resource => new Pladdra3dModel(paths[resource.Url], resource.Url))
                     .ToArray();
 
                 return pladdraObjects;
             });
 
-            while (!task.IsCompleted) {
+            while (!task.IsCompleted)
+            {
                 yield return new WaitForSeconds(1);
             }
 

@@ -1,24 +1,29 @@
 using System;
 using System.Collections;
+using Piglet;
 using UnityEngine;
 
 namespace pladdra_app.Assets.Scripts.Entities
 {
-    public class Pladdra3dModel: IPladdraObject {
+    public class Pladdra3dModel : IPladdraObject
+    {
 
-        public Pladdra3dModel(string path)
+        public Pladdra3dModel(string path, string referenceID)
         {
             Path = path;
+            id = referenceID;
         }
 
         public string Path { get; private set; }
+        public string id { get; private set; }
 
         public IEnumerator CreateLoadCoRoutine(Action<GameObject, Exception> callback)
         {
-            var options = new Piglet.GltfImportOptions(){
-                AutoScale = true,
-                AutoScaleSize = 1f,
-                // ShowModelAfterImport = false
+            var options = new Piglet.GltfImportOptions()
+            {
+                // AutoScale = true,
+                // AutoScaleSize = 1f,
+                ShowModelAfterImport = false
             };
             Tuple<GameObject, Exception> result = null;
             var task = Piglet.RuntimeGltfImporter.GetImportTask(Path, options);
@@ -26,7 +31,8 @@ namespace pladdra_app.Assets.Scripts.Entities
             task.OnCompleted = go => result = new Tuple<GameObject, Exception>(go, null);
             task.OnException = err => result = new Tuple<GameObject, Exception>(null, err);
 
-            while (result == null) {
+            while (result == null)
+            {
                 task.MoveNext();
                 yield return null;
             }
