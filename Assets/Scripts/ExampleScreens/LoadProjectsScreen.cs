@@ -20,7 +20,7 @@ namespace pladdra_app.Assets.Scripts.ExampleScreens
             Repository = repository;
         }
 
-        public LoadProjectsScreen(): this(new SampleDialogProjectRepository(Application.temporaryCachePath))
+        public LoadProjectsScreen() : this(new SampleDialogProjectRepository(Application.temporaryCachePath))
         {
         }
 */
