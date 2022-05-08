@@ -15,15 +15,5 @@ namespace pladdra_app.Assets.Scripts.Workspace
             resources = new WorkspaceResourceManager(this);
             items = new WorkspaceObjectsManager(itemPrefab, targetParent);
         }
-
-        public void Initialize()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Reset()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

@@ -6,8 +6,5 @@ namespace pladdra_app.Assets.Scripts.Workspace
     {
         IWorkspaceResourceManager resources { get; }
         IWorkspaceObjectsManager items { get; }
-
-        void Initialize();
-        void Reset();
     }
 }
