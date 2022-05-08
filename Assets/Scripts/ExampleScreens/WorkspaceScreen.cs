@@ -2,26 +2,43 @@ using System.Collections.Generic;
 using System.Linq;
 using pladdra_app.Assets.Scripts.Entities;
 using pladdra_app.Assets.Scripts.Pipelines;
+using pladdra_app.Assets.Scripts.Workspace;
+using UnityEditor;
+using UnityEngine;
 
 namespace pladdra_app.Assets.Scripts.ExampleScreens
 {
-    public class WorkspaceScreen: Screen {
-        public IPladdraWorkspace Workspace { get; private set; }
+    public class WorkspaceScreen : Screen
+    {
+        public IWorkspaceManager workspace;
 
-        private void Start() {
-            /*
-            foreach(var po in PladdraObjects) {
-                // po.RequestGameObject(this, (go, err) => Debug.Log("GO DONE"));
-                StartCoroutine(po.CreateLoadCoRoutine((go, err) => {
-                    Debug.Log("GO DONE");
-                }));
-            }
-            */
+        public IWorkspaceResourceCollection WorkspaceResourceCollection { get; private set; }
+
+        private void Start()
+        {
         }
 
-        internal void SetWorkspace(IPladdraWorkspace ws)
+        public void SetWorkspace(IWorkspaceResourceCollection wrc)
         {
-            Workspace = ws;
+            WorkspaceResourceCollection = wrc;
+        }
+
+        protected override void BeforeActivateScreen()
+        {
+            workspace = UnityEngine.Object.FindObjectOfType<WorkspaceManager>();
+            workspace.resources.Load(WorkspaceResourceCollection.resources.ToList());
+        }
+
+
+        protected override void AfterActivateScreen()
+        {
+            // TODO: Given resources and possibly  3d space configutrations fomr items,
+            var i = 0;
+            foreach (var resource in workspace.resources.List())
+            {
+                workspace.items.SpawnItem(resource, new Vector3(i, 0, 0), new Quaternion(), new Vector3(1, 1, 1));
+                i = i + 3;
+            }
         }
     }
 }
