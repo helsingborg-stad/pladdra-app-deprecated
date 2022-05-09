@@ -88,7 +88,8 @@ namespace pladdra_app.Assets.Scripts.Pipelines
 
             var plane = new WorkspacePlane
             {
-                dimensions = new Vector2(6, 12)
+                width = 6,
+                height = 12
             };
 
             Debug.Log("[pipline] creating workspace...");
@@ -97,6 +98,7 @@ namespace pladdra_app.Assets.Scripts.Pipelines
 
             var configuration = new WorkspaceConfiguration
             {
+                origin = new WorkspaceOrigin(),
                 cosmos = cosmos,
                 plane = plane,
                 resourceCollection = resourceCollection

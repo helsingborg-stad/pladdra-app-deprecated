@@ -13,17 +13,15 @@ namespace pladdra_app.Assets.Scripts.Workspace
             public IWorkspaceResource workspaceResource { get; set; }
         }
         private GameObject itemPrefab;
-        private GameObject targetParent;
         private List<Item> items;
-        public WorkspaceObjectsManager(GameObject itemPrefab, GameObject targetParent)
+        public WorkspaceObjectsManager(GameObject itemPrefab)
         {
             this.itemPrefab = itemPrefab;
-            this.targetParent = targetParent;
             items = items ?? new List<Item>();
         }
 
         public IWorkspaceObject GetWorkspaceObject(GameObject go) => items.Find(item => item.workspaceObject == go);
-        public void SpawnItem(IWorkspaceResource resource, Vector3 position, Quaternion rotation, Vector3 scale)
+        public void SpawnItem(GameObject targetParent, IWorkspaceResource resource, Vector3 position, Quaternion rotation, Vector3 scale)
         {
             GameObject go = UnityEngine.Object.Instantiate(itemPrefab, position, rotation, targetParent.transform);
             go.SetActive(false);

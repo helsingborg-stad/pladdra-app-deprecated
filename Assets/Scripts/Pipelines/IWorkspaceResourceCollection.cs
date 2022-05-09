@@ -8,19 +8,28 @@ namespace pladdra_app.Assets.Scripts.Pipelines
 
     public class WorkspaceConfiguration
     {
+        public WorkspaceOrigin origin { get; set; }
         public IWorkspacePlane plane { get; set; }
         public IWorkspaceCosmos cosmos { get; set; }
         public IWorkspaceResourceCollection resourceCollection { get; set; }
     }
 
+    public class WorkspaceOrigin
+    {
+        public Vector3 position = new Vector3();
+        public Quaternion rotation = new Quaternion();
+    }
+
     public interface IWorkspacePlane
     {
-        Vector2 dimensions { get; set; }
+        int width { get; set; }
+        int height { get; set; }
     }
 
     public class WorkspacePlane : IWorkspacePlane
     {
-        public Vector2 dimensions { get; set; }
+        public int width { get; set; }
+        public int height { get; set; }
     }
 
     public interface IWorkspaceCosmos
