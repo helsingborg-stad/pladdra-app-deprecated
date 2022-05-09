@@ -32,10 +32,10 @@ namespace pladdra_app.Assets.Scripts.ExampleScreens
                 CreateDialogProjectRepository = () => new SampleDialogProjectRepository(Application.temporaryCachePath),
             };
 
-            StartCoroutine(pipeline.LoadWorkspace(wrc =>
+            StartCoroutine(pipeline.LoadWorkspace((wrc, cosmos) =>
             {
                 GetComponentInParent<ScreenManager>().SetActiveScreen<WorkspaceScreen>(
-                beforeActivate: screen => screen.SetWorkspace(wrc)
+                    beforeActivate: screen => screen.SetWorkspace(wrc, cosmos)
                 );
             }));
         }

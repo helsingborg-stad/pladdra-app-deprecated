@@ -26,7 +26,7 @@ namespace pladdra_app.Assets.Scripts.Pipelines
             CreateWorkspaceResource = (DialogResource resource, GameObject prefab) => new WorkspaceResource { prefab = prefab, resourceID = resource.Url };
             CreateWorkspaceResourceCollection = (DialogProject project, IEnumerable<IWorkspaceResource> items) => new WorkspaceResourceCollection { resources = items };
         }
-        public IEnumerator LoadWorkspace(Action<IWorkspaceResourceCollection> callback)
+        public IEnumerator LoadWorkspace(Action<IWorkspaceResourceCollection, IWorkspaceCosmos> callback)
         {
             Debug.Log("[pipline] loading external project...");
             var repo = CreateDialogProjectRepository();
@@ -70,11 +70,27 @@ namespace pladdra_app.Assets.Scripts.Pipelines
                     .ToList();
             Debug.Log("[pipline] done creating workspace items");
 
+
+            var allResources = modelItems.Concat(markerItems);
+
+            Debug.Log("[pipline] faking cosmos");
+            var cosmos = new WorkspaceCosmos
+            {
+                spaceItems = /* fake */ allResources
+                    .Select((resource, index) => new WorkspaceItemInSpace
+                    {
+                        resourceId = resource.resourceID,
+                        position = new Vector3(index, 0, 0),
+                        scale = new Vector3(1, 1, 1),
+                        rotation = new Quaternion()
+                    }).ToList()
+            };
+
             Debug.Log("[pipline] creating workspace...");
             var ws = CreateWorkspaceResourceCollection(project, modelItems.Concat(markerItems)
                     .ToList());
 
-            callback(ws);
+            callback(ws, cosmos);
         }
     }
 }
