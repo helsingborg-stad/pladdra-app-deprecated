@@ -5,7 +5,6 @@ namespace pladdra_app.Assets.Scripts.Workspace
 {
     public interface IWorkspaceManager
     {
-        IWorkspaceResourceCollection resourceCollection { get; set; }
-        IWorkspaceObjectsManager objectsManager { get; }
+
     }
 }

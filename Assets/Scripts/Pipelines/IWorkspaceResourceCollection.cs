@@ -6,6 +6,23 @@ using UnityEngine;
 namespace pladdra_app.Assets.Scripts.Pipelines
 {
 
+    public class WorkspaceConfiguration
+    {
+        public IWorkspacePlane plane { get; set; }
+        public IWorkspaceCosmos cosmos { get; set; }
+        public IWorkspaceResourceCollection resourceCollection { get; set; }
+    }
+
+    public interface IWorkspacePlane
+    {
+        Vector2 dimensions { get; set; }
+    }
+
+    public class WorkspacePlane : IWorkspacePlane
+    {
+        public Vector2 dimensions { get; set; }
+    }
+
     public interface IWorkspaceCosmos
     {
         IEnumerable<IWorkspaceItemInSpace> spaceItems { get; }
@@ -33,8 +50,6 @@ namespace pladdra_app.Assets.Scripts.Pipelines
 
         public Quaternion rotation { get; set; }
     }
-
-
 
     public interface IWorkspaceResourceCollection
     {

@@ -11,26 +11,21 @@ namespace pladdra_app.Assets.Scripts.Workspace
         public GameObject itemPrefab;
         public GameObject targetParent;
         public IWorkspaceObjectsManager objectsManager { get; private set; }
-        public IWorkspaceResourceCollection resourceCollection { get; set; }
-        public IWorkspaceCosmos cosmos { get; private set; }
+        public WorkspaceConfiguration configuration { get; set; }
 
         private void Awake()
         {
             objectsManager = new WorkspaceObjectsManager(itemPrefab, targetParent);
         }
 
-        public void Activate(
-            IWorkspaceResourceCollection wrc,
-            IWorkspaceCosmos cosmos)
+        public void Activate(WorkspaceConfiguration wc)
         {
-            resourceCollection = wrc;
-            this.cosmos = cosmos;
+            configuration = wc;
 
-
-            var spawns = cosmos.spaceItems
+            var spawns = configuration.cosmos.spaceItems
                 .Select(ci => new
                 {
-                    resource = wrc.TryGetResource(ci.resourceId),
+                    resource = configuration.resourceCollection.TryGetResource(ci.resourceId),
                     ci
                 })
                 .Where(o => o.resource != null);
