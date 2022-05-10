@@ -1,17 +1,39 @@
 using System;
 using System.Linq;
 using pladdra_app.Assets.Scripts.Pipelines;
+using pladdra_app.Assets.Scripts.UXHandlers;
 using UnityEngine;
 
 namespace pladdra_app.Assets.Scripts.Workspace
 {
-
-    public class WorkspaceManager : MonoBehaviour, IWorkspaceManager
+    public interface IWorkspaceScene
     {
+        GameObject plane { get; }
+        IWorkspaceObjectsManager objectsManager { get; }
+    }
+
+    public class WorkspaceManager : MonoBehaviour, IWorkspaceManager, IWorkspaceScene
+    {
+        public IUXHandler uxHandler { get; set; }
         public GameObject workspaceOrigin;
         public GameObject itemPrefab;
-        public IWorkspaceObjectsManager objectsManager { get; private set; }
+        public IWorkspaceObjectsManager objectsManager { get; set; }
         public WorkspaceConfiguration configuration { get; set; }
+
+        public GameObject plane { get; set; }
+
+        public WorkspaceManager()
+        {
+            uxHandler = new NullUXHandler();
+        }
+
+
+        public void SetUXhandler(IUXHandler handler)
+        {
+            uxHandler.Deactivate(this);
+            uxHandler = handler ?? new NullUXHandler();
+            uxHandler.Activate(this);
+        }
 
 
         private void Awake()
@@ -26,7 +48,7 @@ namespace pladdra_app.Assets.Scripts.Workspace
             workspaceOrigin.transform.position = wc.origin.position;
             workspaceOrigin.transform.rotation = wc.origin.rotation;
 
-            var plane = FindObjectOfType<PlaneFactory>()
+            plane = FindObjectOfType<PlaneFactory>()
                 .SpawnPlane(configuration.plane.width, configuration.plane.height);
 
             plane.transform.SetParent(workspaceOrigin.transform);
@@ -48,6 +70,9 @@ namespace pladdra_app.Assets.Scripts.Workspace
                     spawn.ci.rotation,
                     spawn.ci.scale);
             }
+
+            // FAKE CODE
+            SetUXhandler(new CompositeUXHandler(new AllowUserToPositionPlane()));
         }
     }
 }
