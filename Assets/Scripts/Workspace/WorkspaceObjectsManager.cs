@@ -14,6 +14,7 @@ namespace pladdra_app.Assets.Scripts.Workspace
         }
         private GameObject itemPrefab;
         private List<Item> items;
+        public IEnumerable<IWorkspaceObject> objects => items;
         public WorkspaceObjectsManager(GameObject itemPrefab)
         {
             this.itemPrefab = itemPrefab;

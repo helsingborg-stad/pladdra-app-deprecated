@@ -72,7 +72,8 @@ namespace pladdra_app.Assets.Scripts.Workspace
             }
 
             // FAKE CODE
-            SetUXhandler(new CompositeUXHandler(new AllowUserToPositionPlane()));
+            // SetUXhandler(new CompositeUXHandler(new AllowUserToPositionPlane()));
+            SetUXhandler(new CompositeUXHandler(new AllowUserToSelectObjects()));
         }
     }
 }

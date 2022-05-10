@@ -52,24 +52,44 @@ namespace pladdra_app.Assets.Scripts.UXHandlers
         }
     }
 
-    public class AllowUserToPositionPlane : IUXHandler
+    public abstract class AbstractLeanSelectable : IUXHandler
     {
+        protected abstract IEnumerable<GameObject> GetSelectableObjects(IWorkspaceScene scene);
         public void Activate(IWorkspaceScene scene)
         {
-            scene.plane.GetComponent<LeanDragTranslateAlong>().enabled = true;
-            scene.plane.GetComponent<LeanTwistRotateAxis>().enabled = true;
-            scene.plane.GetComponent<LeanSelectable>().enabled = true;
-            scene.plane.GetComponent<LeanSelectable>().enabled = true;
-            scene.plane.GetComponent<BoxCollider>().enabled = true;
-            scene.plane.GetComponent<FlexibleBoxCollider>().SetBoxColliderSize();
+            foreach (var obj in GetSelectableObjects(scene))
+            {
+                obj.GetComponent<LeanDragTranslateAlong>().enabled = true;
+                obj.GetComponent<LeanTwistRotateAxis>().enabled = true;
+                obj.GetComponent<LeanSelectable>().enabled = true;
+                obj.GetComponent<BoxCollider>().enabled = true;
+                obj.GetComponent<FlexibleBoxCollider>().SetBoxColliderSize();
+            }
         }
 
         public void Deactivate(IWorkspaceScene scene)
         {
-            scene.plane.GetComponent<LeanDragTranslateAlong>().enabled = false;
-            scene.plane.GetComponent<LeanTwistRotateAxis>().enabled = false;
-            scene.plane.GetComponent<LeanSelectable>().enabled = false;
-            scene.plane.GetComponent<BoxCollider>().enabled = false;
+            foreach (var obj in GetSelectableObjects(scene))
+            {
+                obj.GetComponent<LeanDragTranslateAlong>().enabled = false;
+                obj.GetComponent<LeanTwistRotateAxis>().enabled = false;
+                obj.GetComponent<LeanSelectable>().enabled = false;
+                obj.GetComponent<BoxCollider>().enabled = false;
+            }
+        }
+    }
+    public class AllowUserToPositionPlane : AbstractLeanSelectable
+    {
+        protected override IEnumerable<GameObject> GetSelectableObjects(IWorkspaceScene scene)
+        {
+            return new[] { scene.plane };
+        }
+    }
+    public class AllowUserToSelectObjects : AbstractLeanSelectable
+    {
+        protected override IEnumerable<GameObject> GetSelectableObjects(IWorkspaceScene scene)
+        {
+            return scene.objectsManager.objects.Select(o => o.gameObject);
         }
     }
 }
