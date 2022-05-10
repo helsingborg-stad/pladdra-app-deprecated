@@ -1,11 +1,11 @@
 using System;
 using UnityEngine;
 
-namespace pladdra_app.Assets.Scripts.Pipelines
+namespace Pipelines
 {
     public class Load3dModel: CustomYieldInstruction {
-        public Piglet.GltfImportTask Task { get; }
-        public Tuple<GameObject, Exception> Result {get; private set; }
+        private Piglet.GltfImportTask Task { get; }
+        private Tuple<GameObject, Exception> Result {get; set; }
 
         public Load3dModel(string path, Action<GameObject> callback) {
             Callback = callback;
@@ -34,6 +34,6 @@ namespace pladdra_app.Assets.Scripts.Pipelines
             }
         }
 
-        public Action<GameObject> Callback { get; }
+        private Action<GameObject> Callback { get; }
     }
 }

@@ -9,8 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
+using Utility;
 
-namespace pladdra_app.Assets.Scripts.Data
+namespace Data
 {
     public class WebResourceManager: IWebResourceManager {
         [Serializable]

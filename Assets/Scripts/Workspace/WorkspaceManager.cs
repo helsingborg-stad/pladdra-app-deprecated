@@ -1,79 +1,71 @@
-using System;
 using System.Linq;
-using pladdra_app.Assets.Scripts.Pipelines;
-using pladdra_app.Assets.Scripts.UXHandlers;
 using UnityEngine;
+using UXHandlers;
 
-namespace pladdra_app.Assets.Scripts.Workspace
+namespace Workspace
 {
-    public interface IWorkspaceScene
-    {
-        GameObject plane { get; }
-        IWorkspaceObjectsManager objectsManager { get; }
-    }
-
     public class WorkspaceManager : MonoBehaviour, IWorkspaceManager, IWorkspaceScene
     {
-        public IUXHandler uxHandler { get; set; }
+        public IUxHandler UxHandler { get; set; }
         public GameObject workspaceOrigin;
         public GameObject itemPrefab;
-        public IWorkspaceObjectsManager objectsManager { get; set; }
-        public WorkspaceConfiguration configuration { get; set; }
+        public IWorkspaceObjectsManager ObjectsManager { get; set; }
+        private WorkspaceConfiguration Configuration { get; set; }
 
-        public GameObject plane { get; set; }
+        public GameObject Plane { get; set; }
 
         public WorkspaceManager()
         {
-            uxHandler = new NullUXHandler();
+            UxHandler = new NullUxHandler();
         }
 
 
-        public void SetUXhandler(IUXHandler handler)
+        public void SetUXhandler(IUxHandler handler)
         {
-            uxHandler.Deactivate(this);
-            uxHandler = handler ?? new NullUXHandler();
-            uxHandler.Activate(this);
+            UxHandler.Deactivate(this);
+            UxHandler = handler ?? new NullUxHandler();
+            UxHandler.Activate(this);
         }
 
 
         private void Awake()
         {
-            objectsManager = new WorkspaceObjectsManager(itemPrefab);
+            ObjectsManager = new WorkspaceObjectsManager(itemPrefab);
         }
 
         public void Activate(WorkspaceConfiguration wc)
         {
-            configuration = wc;
+            Configuration = wc;
 
-            workspaceOrigin.transform.position = wc.origin.position;
-            workspaceOrigin.transform.rotation = wc.origin.rotation;
+            workspaceOrigin.transform.position = wc.Origin.Position;
+            workspaceOrigin.transform.rotation = wc.Origin.Rotation;
 
-            plane = FindObjectOfType<PlaneFactory>()
-                .SpawnPlane(configuration.plane.width, configuration.plane.height);
+            Plane = FindObjectOfType<PlaneFactory>()
+                .SpawnPlane(Configuration.Plane.Width, Configuration.Plane.Height);
 
-            plane.transform.SetParent(workspaceOrigin.transform);
+            Plane.transform.SetParent(workspaceOrigin.transform);
 
-            var spawns = configuration.cosmos.spaceItems
+            var spawns = Configuration.Cosmos.SpaceItems
                 .Select(ci => new
                 {
-                    resource = configuration.resourceCollection.TryGetResource(ci.resourceId),
+                    resource = Configuration.ResourceCollection.TryGetResource(ci.ResourceId),
                     ci
                 })
                 .Where(o => o.resource != null);
 
             foreach (var spawn in spawns)
             {
-                objectsManager.SpawnItem(
-                    plane,
+                ObjectsManager.SpawnItem(
+                    Plane,
                     spawn.resource,
-                    spawn.ci.position,
-                    spawn.ci.rotation,
-                    spawn.ci.scale);
+                    spawn.ci.Position,
+                    spawn.ci.Rotation,
+                    spawn.ci.Scale);
             }
 
             // FAKE CODE
             // SetUXhandler(new CompositeUXHandler(new AllowUserToPositionPlane()));
-            SetUXhandler(new CompositeUXHandler(new AllowUserToSelectObjects()));
+            SetUXhandler(new CompositeUxHandler(new AllowUserToSelectObjects()));
         }
     }
 }

@@ -1,15 +1,16 @@
+using System;
 using UnityEngine;
 
-namespace pladdra_app.Assets.Scripts
+namespace Screens
 {
     public abstract class Screen : MonoBehaviour
     {
-        virtual public object[] GetScreenChildObjects() { return new object[0]; }
+        protected virtual object[] GetScreenChildObjects() { return Array.Empty<object>(); }
 
-        virtual protected void BeforeActivateScreen() { }
-        virtual protected void AfterActivateScreen() { }
-        virtual protected void BeforeDeactivateScreen() { }
-        virtual protected void AfterDeactivateScreen() { }
+        protected virtual void BeforeActivateScreen() { }
+        protected virtual void AfterActivateScreen() { }
+        protected virtual void BeforeDeactivateScreen() { }
+        protected virtual void AfterDeactivateScreen() { }
 
 
         public void SetScreenActive(bool active)

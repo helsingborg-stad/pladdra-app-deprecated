@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace pladdra_app.Assets.Scripts.Pipelines
+namespace Pipelines
 {
     public class TaskYieldInstruction<T> : CustomYieldInstruction
     {
@@ -19,11 +19,11 @@ namespace pladdra_app.Assets.Scripts.Pipelines
             }
         }
 
-        public Func<Task<T>> Action { get; }
-        public Action<T> Callback { get; }
-        public Task<T> Task { get; }
+        private Func<Task<T>> Action { get; }
+        private Action<T> Callback { get; }
+        private Task<T> Task { get; }
 
-        public TaskYieldInstruction(Func<Task<T>> action, Action<T> callback)
+        protected TaskYieldInstruction(Func<Task<T>> action, Action<T> callback)
         {
             Action = action;
             Callback = callback;

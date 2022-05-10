@@ -1,9 +1,8 @@
 using UnityEngine;
 
-namespace pladdra_app.Assets.Scripts.Workspace
+namespace Workspace
 {
-    public class WorkspaceObject : MonoBehaviour, IWorkspaceObject
+    public class WorkspaceObject : MonoBehaviour
     {
-        public IWorkspaceResource workspaceResource { get; private set; }
     }
 }

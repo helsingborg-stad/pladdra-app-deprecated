@@ -2,18 +2,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using pladdra_app.Assets.Scripts.Data;
-using pladdra_app.Assets.Scripts.Data.Dialogs;
-using pladdra_app.Assets.Scripts.Workspace;
+using Data;
+using Data.Dialogs;
 using UnityEngine;
+using Utility;
+using Workspace;
 
-namespace pladdra_app.Assets.Scripts.Pipelines
+namespace Pipelines
 {
     public class Pipeline
     {
         public Func<IDialogProjectRepository> CreateDialogProjectRepository { get; set; }
 
-        public Func<WebResourceManager> CreateWebResourceManager { get; set; }
+        public Func<IWebResourceManager> CreateWebResourceManager { get; set; }
 
         public Func<DialogResource, GameObject, IWorkspaceResource> CreateWorkspaceResource { get; set; }
 
@@ -23,8 +24,8 @@ namespace pladdra_app.Assets.Scripts.Pipelines
         {
             CreateDialogProjectRepository = () => new SampleDialogProjectRepository(Application.temporaryCachePath);
             CreateWebResourceManager = () => new WebResourceManager(Application.temporaryCachePath);
-            CreateWorkspaceResource = (DialogResource resource, GameObject prefab) => new WorkspaceResource { prefab = prefab, resourceID = resource.Url };
-            CreateWorkspaceResourceCollection = (DialogProject project, IEnumerable<IWorkspaceResource> items) => new WorkspaceResourceCollection { resources = items };
+            CreateWorkspaceResource = (resource, prefab) => new WorkspaceResource { Prefab = prefab, ResourceID = resource.Url };
+            CreateWorkspaceResourceCollection = (project, items) => new WorkspaceResourceCollection { Resources = items };
         }
         public IEnumerator LoadWorkspace(Action<WorkspaceConfiguration> callback)
         {
@@ -76,20 +77,20 @@ namespace pladdra_app.Assets.Scripts.Pipelines
             Debug.Log("[pipline] faking cosmos");
             var cosmos = new WorkspaceCosmos
             {
-                spaceItems = /* fake */ allResources
+                SpaceItems = /* fake */ allResources
                     .Select((resource, index) => new WorkspaceItemInSpace
                     {
-                        resourceId = resource.resourceID,
-                        position = new Vector3(index, 0, 0),
-                        scale = new Vector3(1, 1, 1),
-                        rotation = new Quaternion()
+                        ResourceId = resource.ResourceID,
+                        Position = new Vector3(index, 0, 0),
+                        Scale = new Vector3(1, 1, 1),
+                        Rotation = new Quaternion()
                     }).ToList()
             };
 
             var plane = new WorkspacePlane
             {
-                width = 6,
-                height = 12
+                Width = 6,
+                Height = 12
             };
 
             Debug.Log("[pipline] creating workspace...");
@@ -98,10 +99,10 @@ namespace pladdra_app.Assets.Scripts.Pipelines
 
             var configuration = new WorkspaceConfiguration
             {
-                origin = new WorkspaceOrigin(),
-                cosmos = cosmos,
-                plane = plane,
-                resourceCollection = resourceCollection
+                Origin = new WorkspaceOrigin(),
+                Cosmos = cosmos,
+                Plane = plane,
+                ResourceCollection = resourceCollection
             };
 
 

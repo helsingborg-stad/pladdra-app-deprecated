@@ -1,12 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
-using pladdra_app.Assets.Scripts.Entities;
-using pladdra_app.Assets.Scripts.Pipelines;
-using pladdra_app.Assets.Scripts.Workspace;
-using UnityEditor;
-using UnityEngine;
+using Workspace;
+using Screen = Screens.Screen;
 
-namespace pladdra_app.Assets.Scripts.ExampleScreens
+namespace ExampleScreens
 {
     public class WorkspaceScreen : Screen
     {

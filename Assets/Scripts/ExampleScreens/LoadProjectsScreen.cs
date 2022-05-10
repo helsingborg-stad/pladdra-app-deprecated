@@ -1,30 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using pladdra_app.Assets.Scripts.Data;
-using pladdra_app.Assets.Scripts.Data.Dialogs;
-using pladdra_app.Assets.Scripts.Entities;
-using pladdra_app.Assets.Scripts.Pipelines;
+using Data.Dialogs;
+using Pipelines;
+using Screens;
 using UnityEngine;
+using Screen = Screens.Screen;
 
-namespace pladdra_app.Assets.Scripts.ExampleScreens
+namespace ExampleScreens
 {
 
     public class LoadProjectsScreen : Screen
     {
-        /*
-              public IDialogProjectRepository Repository { get; set; }
-
-              public LoadProjectsScreen(IDialogProjectRepository repository)
-              {
-                  Repository = repository;
-              }
-
-              public LoadProjectsScreen() : this(new SampleDialogProjectRepository(Application.temporaryCachePath))
-              {
-              }
-      */
         private void Start()
         {
             var pipeline = new Pipeline()

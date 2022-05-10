@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace pladdra_app.Assets.Scripts.Workspace
+namespace Workspace
 {
     public interface IWorkspaceObjectsManager
     {
-        IEnumerable<IWorkspaceObject> objects { get; }
+        IEnumerable<IWorkspaceObject> Objects { get; }
 
         void SpawnItem(GameObject targetParent, IWorkspaceResource resource, Vector3 position, Quaternion rotation, Vector3 scale);
     }

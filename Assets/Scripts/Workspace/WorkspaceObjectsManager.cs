@@ -1,48 +1,46 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-namespace pladdra_app.Assets.Scripts.Workspace
+namespace Workspace
 {
-    public class WorkspaceObjectsManager : IWorkspaceSubManager, IWorkspaceObjectsManager
+    public class WorkspaceObjectsManager : IWorkspaceObjectsManager
     {
         public class Item : IWorkspaceObject
         {
-            public GameObject gameObject { get; set; }
-            public WorkspaceObject workspaceObject { get; set; }
-            public IWorkspaceResource workspaceResource { get; set; }
+            public GameObject GameObject { get; set; }
+            public WorkspaceObject WorkspaceObject { get; set; }
+            public IWorkspaceResource WorkspaceResource { get; set; }
         }
-        private GameObject itemPrefab;
-        private List<Item> items;
-        public IEnumerable<IWorkspaceObject> objects => items;
+        private readonly GameObject itemPrefab;
+        private List<Item> Items { get; }
+        public IEnumerable<IWorkspaceObject> Objects => Items;
         public WorkspaceObjectsManager(GameObject itemPrefab)
         {
             this.itemPrefab = itemPrefab;
-            items = items ?? new List<Item>();
+            Items = new List<Item>();
         }
 
-        public IWorkspaceObject GetWorkspaceObject(GameObject go) => items.Find(item => item.workspaceObject == go);
         public void SpawnItem(GameObject targetParent, IWorkspaceResource resource, Vector3 position, Quaternion rotation, Vector3 scale)
         {
-            GameObject go = UnityEngine.Object.Instantiate(itemPrefab, position, rotation, targetParent.transform);
+            var go = Object.Instantiate(itemPrefab, position, rotation, targetParent.transform);
             go.SetActive(false);
             go.transform.SetParent(targetParent.transform);
             TransformItem(go, position, rotation, scale);
 
-            GameObject resourceGo = UnityEngine.Object.Instantiate(resource.prefab, position, rotation, go.transform);
+            var resourceGo = Object.Instantiate(resource.Prefab, position, rotation, go.transform);
             resourceGo.SetActive(true);
 
-            items.Add(new Item
+            Items.Add(new Item
             {
-                gameObject = go,
-                workspaceObject = go.GetComponent<WorkspaceObject>(),
-                workspaceResource = resource
+                GameObject = go,
+                WorkspaceObject = go.GetComponent<WorkspaceObject>(),
+                WorkspaceResource = resource
             });
 
             go.SetActive(true);
         }
 
-        public void TransformItem(GameObject go, Vector3 position, Quaternion rotation, Vector3 scale)
+        private void TransformItem(GameObject go, Vector3 position, Quaternion rotation, Vector3 scale)
         {
             go.transform.localPosition = position;
             go.transform.localRotation = rotation;

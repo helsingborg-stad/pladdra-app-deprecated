@@ -1,4 +1,6 @@
-namespace pladdra_app.Assets.Scripts.ExampleScreens
+using Screens;
+
+namespace ExampleScreens
 {
     public class WelcomeScreen : Screen
     {

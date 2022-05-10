@@ -1,10 +1,10 @@
 using UnityEngine;
 
-namespace pladdra_app.Assets.Scripts.Workspace
+namespace Workspace
 {
     public interface IWorkspaceResource
     {
-        string resourceID { get; set; }
-        GameObject prefab { get; }
+        string ResourceID { get; }
+        GameObject Prefab { get; }
     }
 }

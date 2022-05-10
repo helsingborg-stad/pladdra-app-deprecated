@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-namespace pladdra_app.Assets.Scripts
+namespace Screens
 {
 
     public class ScreenManager: MonoBehaviour{
