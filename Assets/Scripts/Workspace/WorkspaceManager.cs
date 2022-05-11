@@ -1,5 +1,6 @@
 using System.Linq;
 using DefaultNamespace;
+using Lean.Common;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UXHandlers;
@@ -82,7 +83,7 @@ namespace Workspace
                         };
                         root.Q<Button>("done").clicked += () =>
                         {
-                            // Todo: Deselect object
+                            go.GetComponent<LeanSelectable>().Deselect();
                         };
                     });
             }, go =>
