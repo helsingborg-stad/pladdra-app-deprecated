@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Lean.Common;
@@ -17,12 +18,43 @@ namespace Workspace
         public override void Activate(IWorkspaceScene scene)
         {
             base.Activate(scene);
-
+            
             scene.UseHud("user-can-chose-to-spawn-item-from-resource-hud", root =>
             {
+                var items = scene.Resources.Resources.ToList();
+                
+                var listItem = Resources.Load<VisualTreeAsset>("resource-gallery-list-item-template");
+
+                
+                // The "makeItem" function will be called as needed
+                // when the ListView needs more items to render
+                Func<VisualElement> makeItem = () => listItem.Instantiate();
+
+                // As the user scrolls through the list, the ListView object
+                // will recycle elements created by the "makeItem"
+                // and invoke the "bindItem" callback to associate
+                // the element with the matching data item (specified as an index in the list)
+                Action<VisualElement, int> bindItem = (e, i) =>
+                {
+                    var tc = e as TemplateContainer;
+                    tc.Q<Label>("label").text = items[i].ResourceID;
+                    tc.Q<Button>("add").clicked += () =>
+                    {
+                        scene.ObjectsManager.SpawnItem(scene.Plane, items[i],
+                            Vector3.zero, Quaternion.identity, new Vector3(1, 1, 1));
+                        scene.UseUxHandler(new AllowUserToPositionObjects());
+                    };
+                };
+                
+                var listView = root.Q<ListView>();
+                listView.selectionType = SelectionType.None;
+                listView.itemsSource = items;
+                listView.makeItem = makeItem;
+                listView.bindItem = bindItem;
                 root.Q<Button>("close").clicked += () =>
                 {
                     scene.UseUxHandler(new AllowUserToPositionObjects());
+                    
                 };
             });
             

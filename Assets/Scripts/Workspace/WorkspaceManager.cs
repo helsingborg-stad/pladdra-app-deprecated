@@ -13,6 +13,7 @@ namespace Workspace
         public GameObject workspaceOrigin;
         public GameObject itemPrefab;
         public IWorkspaceObjectsManager ObjectsManager { get; set; }
+        public IWorkspaceResourceCollection Resources => Configuration.ResourceCollection;
 
         public void UseHud(string templatePath, Action<VisualElement> bindUi)
         {
