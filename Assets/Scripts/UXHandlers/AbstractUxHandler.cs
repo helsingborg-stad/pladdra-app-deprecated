@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Lean.Common;
 using Lean.Touch;
@@ -7,20 +6,14 @@ using Workspace;
 
 namespace UXHandlers
 {
-    public abstract class AbstractLeanSelectable : IUxHandler
+    public abstract class AbstractUxHandler : IUxHandler
     {
         protected abstract IEnumerable<GameObject> GetSelectableObjects(IWorkspaceScene scene);
 
-        protected Action<GameObject> OnSelected { get; set; }
-        protected Action<GameObject> OnDeselected { get; set; }
-
-        protected AbstractLeanSelectable(Action<GameObject> onSelected, Action<GameObject> onDeselected)
-        {
-            OnSelected = onSelected;
-            OnDeselected = onDeselected;
-        }
+        protected virtual void OnSelected(IWorkspaceScene scene, GameObject go) {}
+        protected virtual void OnDeselected(IWorkspaceScene scene, GameObject go) {}
         
-        public void Activate(IWorkspaceScene scene)
+        public virtual void Activate(IWorkspaceScene scene)
         {
             foreach (var obj in GetSelectableObjects(scene))
             {
@@ -31,12 +24,12 @@ namespace UXHandlers
 
                 var selectable = obj.GetComponent<LeanSelectable>();
                 selectable.enabled = true;
-                selectable.OnSelected.AddListener(() => OnSelected(obj));
-                selectable.OnDeselected.AddListener(() => OnDeselected(obj));
+                selectable.OnSelected.AddListener(() => OnSelected(scene, obj));
+                selectable.OnDeselected.AddListener(() => OnDeselected(scene, obj));
             }
         }
 
-        public void Deactivate(IWorkspaceScene scene)
+        public virtual void Deactivate(IWorkspaceScene scene)
         {
             foreach (var obj in GetSelectableObjects(scene))
             {
@@ -49,6 +42,15 @@ namespace UXHandlers
                 selectable.OnSelected.RemoveAllListeners();
                 selectable.OnDeselected.RemoveAllListeners();
             }
+        }
+
+        protected void SelectObject(GameObject go)
+        {
+            Object.FindObjectOfType<LeanSelect>().Select(go.GetComponent<LeanSelectable>());
+        }
+        protected void DeselectAll()
+        {
+            Object.FindObjectOfType<LeanSelect>().DeselectAll();
         }
     }
 }

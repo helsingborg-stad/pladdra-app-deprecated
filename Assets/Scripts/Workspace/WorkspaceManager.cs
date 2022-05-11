@@ -1,6 +1,6 @@
+using System;
 using System.Linq;
 using DefaultNamespace;
-using Lean.Common;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UXHandlers;
@@ -13,6 +13,25 @@ namespace Workspace
         public GameObject workspaceOrigin;
         public GameObject itemPrefab;
         public IWorkspaceObjectsManager ObjectsManager { get; set; }
+
+        public void UseHud(string templatePath, Action<VisualElement> bindUi)
+        {
+            FindObjectOfType<HudManager>()
+                .UseHud(templatePath, bindUi);
+        }
+
+        public void UseUxHandler(IUxHandler handler)
+        {
+            UxHandler.Deactivate(this);
+            UxHandler = handler ?? new NullUxHandler();
+            UxHandler.Activate(this);
+        }
+
+        public void ClearHud()
+        {
+            FindObjectOfType<HudManager>().ClearHud();
+        }
+
         private WorkspaceConfiguration Configuration { get; set; }
 
         public GameObject Plane { get; set; }
@@ -21,16 +40,7 @@ namespace Workspace
         {
             UxHandler = new NullUxHandler();
         }
-
-
-        public void SetUXhandler(IUxHandler handler)
-        {
-            UxHandler.Deactivate(this);
-            UxHandler = handler ?? new NullUxHandler();
-            UxHandler.Activate(this);
-        }
-
-
+        
         private void Awake()
         {
             ObjectsManager = new WorkspaceObjectsManager(itemPrefab);
@@ -66,55 +76,8 @@ namespace Workspace
                     spawn.ci.Scale);
             }
 
-            SetModeAllowUserToPositionPlane();
-        }
-        
-        public void SetModeAllowUserToPositionPlane()
-        {
-            SetUXhandler(new AllowUserToPositionPlane(go =>
-            {
-                FindObjectOfType<HudManager>()
-                    .ViewFromTemplate("user-can-position-the-plane-hud", root =>
-                    {
-                        root.Q<Button>("done").clicked += () =>
-                        {
-                            SetModeAllowUserToSelectItems();
-                        };
-                    });
-            }, go =>
-            {
-                
-            }));
-        }
-        
-        public void SetModeAllowUserToSelectItems()
-        {
-            SetUXhandler(new AllowUserToSelectObjects(go =>
-            {
-                FindObjectOfType<HudManager>()
-                    .ViewFromTemplate("user-has-selected-workspace-item-hud", root =>
-                    {
-                        root.Q<Button>("remove").clicked += () =>
-                        {
-                            ObjectsManager.DestroyItem(go);
-                            SetModeAllowUserToSelectItems();
-                        };
-                        root.Q<Button>("done").clicked += () =>
-                        {
-                            go.GetComponent<LeanSelectable>().Deselect();
-                        };
-                    });
-            }, go =>
-            {
-                SetModeAllowUserToSelectItems();
-            }));
-            
-            FindObjectOfType<HudManager>()
-                .ViewFromTemplate("user-can-select-workspace-items-hud", root =>
-                {
-                    root.Q<Button>("inventory").clicked += () => { };
-                    root.Q<Button>("edit-plane").clicked += () => { };
-                });
+            UseUxHandler(new AllowUserToPositionPlane());
+//            SetModeAllowUserToPositionPlane();
         }
     }
 }

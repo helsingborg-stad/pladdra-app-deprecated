@@ -6,7 +6,7 @@ namespace DefaultNamespace
 {
     public class HudManager : MonoBehaviour
     {
-        public void ViewFromTemplate(string templatePath, Action<VisualElement> bindUi)
+        public void UseHud(string templatePath, Action<VisualElement> bindUi)
         {
             var uxml = Resources.Load<VisualTreeAsset>(templatePath);
             var uiDocument = FindObjectOfType<UIDocument>();
@@ -15,7 +15,7 @@ namespace DefaultNamespace
             bindUi(root);
         }
 
-        public void ClearUI()
+        public void ClearHud()
         {
             FindObjectOfType<UIDocument>().visualTreeAsset = null;
         }
