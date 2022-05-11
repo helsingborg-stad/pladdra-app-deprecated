@@ -66,9 +66,26 @@ namespace Workspace
                     spawn.ci.Scale);
             }
 
-            SetModeAllowUserToSelectItems();
+            SetModeAllowUserToPositionPlane();
         }
         
+        public void SetModeAllowUserToPositionPlane()
+        {
+            SetUXhandler(new AllowUserToPositionPlane(go =>
+            {
+                FindObjectOfType<HudManager>()
+                    .ViewFromTemplate("user-can-position-the-plane-hud", root =>
+                    {
+                        root.Q<Button>("done").clicked += () =>
+                        {
+                            SetModeAllowUserToSelectItems();
+                        };
+                    });
+            }, go =>
+            {
+                
+            }));
+        }
         
         public void SetModeAllowUserToSelectItems()
         {
