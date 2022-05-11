@@ -69,6 +69,7 @@ namespace Workspace
             SetModeAllowUserToSelectItems();
         }
         
+        
         public void SetModeAllowUserToSelectItems()
         {
             SetUXhandler(new AllowUserToSelectObjects(go =>
