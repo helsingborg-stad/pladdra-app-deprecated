@@ -7,6 +7,28 @@ using UXHandlers;
 
 namespace Workspace
 {
+    public class AllowUserToSpawnItemFromResource : AbstractUxHandler
+    {
+        protected override IEnumerable<GameObject> GetSelectableObjects(IWorkspaceScene scene)
+        {
+            return Enumerable.Empty<GameObject>();
+        }
+
+        public override void Activate(IWorkspaceScene scene)
+        {
+            base.Activate(scene);
+
+            scene.UseHud("user-can-chose-to-spawn-item-from-resource-hud", root =>
+            {
+                root.Q<Button>("close").clicked += () =>
+                {
+                    scene.UseUxHandler(new AllowUserToPositionObjects());
+                };
+            });
+            
+        }
+    }
+    
     public class AllowUserToPositionObjects: AbstractUxHandler
     {
         protected override void OnSelected(IWorkspaceScene scene, GameObject go)
@@ -33,7 +55,17 @@ namespace Workspace
         public override void Activate(IWorkspaceScene scene)
         {
             base.Activate(scene);
-            scene.ClearHud();
+            scene.UseHud("user-can-chose-workspace-action-hud", root =>
+            {
+                root.Q<Button>("edit-plane").clicked += () =>
+                {
+                    scene.UseUxHandler(new AllowUserToPositionPlane());
+                };
+                root.Q<Button>("inventory").clicked += () =>
+                {
+                    scene.UseUxHandler(new AllowUserToSpawnItemFromResource());
+                };
+            });
         }
 
         protected override IEnumerable<GameObject> GetSelectableObjects(IWorkspaceScene scene)
