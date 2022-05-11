@@ -1,5 +1,7 @@
 using System.Linq;
+using DefaultNamespace;
 using UnityEngine;
+using UnityEngine.UIElements;
 using UXHandlers;
 
 namespace Workspace
@@ -63,9 +65,37 @@ namespace Workspace
                     spawn.ci.Scale);
             }
 
-            // FAKE CODE
-            // SetUXhandler(new CompositeUXHandler(new AllowUserToPositionPlane()));
-            SetUXhandler(new CompositeUxHandler(new AllowUserToSelectObjects()));
+            SetModeAllowUserToPositionItems();
+        }
+
+        public void SetModeAllowUserToPositionItems()
+        {
+            SetUXhandler(new AllowUserToSelectObjects(go =>
+            {
+                FindObjectOfType<HudManager>()
+                    .ViewFromTemplate("user-has-selected-workspace-item-hud", root =>
+                    {
+                        root.Q<Button>("remove").clicked += () =>
+                        {
+                            ObjectsManager.DestroyItem(go);
+                            SetModeAllowUserToPositionItems();
+                        };
+                        root.Q<Button>("done").clicked += () =>
+                        {
+                            // Todo: Deselect object
+                        };
+                    });
+            }, go =>
+            {
+                SetModeAllowUserToPositionItems();
+            }));
+            
+            FindObjectOfType<HudManager>()
+                .ViewFromTemplate("user-can-select-workspace-items-hud", root =>
+                {
+                    root.Q<Button>("inventory").clicked += () => { };
+                    root.Q<Button>("edit-plane").clicked += () => { };
+                });
         }
     }
 }

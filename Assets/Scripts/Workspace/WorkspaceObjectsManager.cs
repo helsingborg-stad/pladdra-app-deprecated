@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Workspace
@@ -38,6 +39,13 @@ namespace Workspace
             });
 
             go.SetActive(true);
+        }
+
+        public void DestroyItem(GameObject go)
+        {
+            var item = Items.Find(item => item.GameObject == go);
+            Items.Remove(item);
+            UnityEngine.Object.Destroy(go);
         }
 
         private void TransformItem(GameObject go, Vector3 position, Quaternion rotation, Vector3 scale)
