@@ -66,10 +66,10 @@ namespace Workspace
                     spawn.ci.Scale);
             }
 
-            SetModeAllowUserToPositionItems();
+            SetModeAllowUserToSelectItems();
         }
-
-        public void SetModeAllowUserToPositionItems()
+        
+        public void SetModeAllowUserToSelectItems()
         {
             SetUXhandler(new AllowUserToSelectObjects(go =>
             {
@@ -79,7 +79,7 @@ namespace Workspace
                         root.Q<Button>("remove").clicked += () =>
                         {
                             ObjectsManager.DestroyItem(go);
-                            SetModeAllowUserToPositionItems();
+                            SetModeAllowUserToSelectItems();
                         };
                         root.Q<Button>("done").clicked += () =>
                         {
@@ -88,7 +88,7 @@ namespace Workspace
                     });
             }, go =>
             {
-                SetModeAllowUserToPositionItems();
+                SetModeAllowUserToSelectItems();
             }));
             
             FindObjectOfType<HudManager>()
