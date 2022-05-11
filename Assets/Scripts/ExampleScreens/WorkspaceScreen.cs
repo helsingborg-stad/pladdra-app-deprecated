@@ -1,3 +1,6 @@
+using DefaultNamespace;
+using UnityEngine;
+using UnityEngine.UIElements;
 using Workspace;
 using Screen = Screens.Screen;
 
@@ -24,6 +27,20 @@ namespace ExampleScreens
         {
             FindObjectOfType<WorkspaceManager>()
                 .Activate(configuration);
+
+            FindObjectOfType<HudManager>()
+                .ViewFromTemplate("SampleUI", root =>
+                {
+                    var btn = root.Q<Button>("button");
+                    btn.clicked += () =>
+                    {
+                        Debug.Log("Clicked!!!!");
+                        FindObjectOfType<HudManager>().ClearUI();
+                    };
+                    Debug.Log("UI Config");
+                    Debug.Log(btn);
+                });
+
         }
     }
 }
