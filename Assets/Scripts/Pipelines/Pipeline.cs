@@ -74,7 +74,7 @@ namespace Pipelines
         {
             OnTaskStarted(label);
             var result = factory();
-            //OnTaskDone(label);
+            OnTaskDone(label);
             return result;
         }
         
