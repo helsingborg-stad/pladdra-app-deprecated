@@ -10,8 +10,6 @@ namespace Pipelines
         public Load3dModel(string path, Action<GameObject> callback) {
             Callback = callback;
             var options = new Piglet.GltfImportOptions(){
-                AutoScale = true,
-                AutoScaleSize = 1f,
                 ShowModelAfterImport = false
             };
             Task = Piglet.RuntimeGltfImporter.GetImportTask(path, options);
