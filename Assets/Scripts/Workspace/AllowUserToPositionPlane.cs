@@ -15,7 +15,7 @@ namespace Workspace
 
         protected override void OnSelected(IWorkspaceScene scene, GameObject go)
         {
-            scene.UseHud("user-can-position-the-plane-hud", root =>
+            scene.UseHud("user-has-selected-plane-hud", root =>
             {
                 root.Q<Button>("done").clicked += () =>
                 {

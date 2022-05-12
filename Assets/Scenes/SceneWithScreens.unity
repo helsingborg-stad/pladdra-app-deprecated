@@ -408,7 +408,7 @@ GameObject:
   - component: {fileID: 660779248}
   - component: {fileID: 660779249}
   m_Layer: 0
-  m_Name: HUDManager
+  m_Name: HUD Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1064,7 +1064,7 @@ GameObject:
   - component: {fileID: 1735382697328653843}
   - component: {fileID: 1735382697328653842}
   m_Layer: 0
-  m_Name: SampleUI
+  m_Name: UI Document
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,6 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:VisualElement name="list-item-template" style="flex-direction: row; flex-wrap: nowrap;">
-        <ui:Label text="Label" display-tooltip-when-elided="true" name="label" />
-        <ui:Button text="Add" display-tooltip-when-elided="true" name="add" enable-rich-text="true" />
-    </ui:VisualElement>
-</ui:UXML>
