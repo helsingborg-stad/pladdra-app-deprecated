@@ -5,12 +5,9 @@ namespace Workspace
 {
     public class WorkspaceResourceCollection : IWorkspaceResourceCollection
     {
-        public IWorkspaceResource TryGetResource(string resourceId) => Resources.FirstOrDefault(r => r.ResourceID == resourceId);
+        public IWorkspaceResource TryGetResource(string resourceId) =>
+            Resources.FirstOrDefault(r => r.ResourceID == resourceId);
 
-        public IEnumerable<IWorkspaceResource> Resources
-        {
-            get;
-            set;
-        }
+        public IEnumerable<IWorkspaceResource> Resources { get; set; }
     }
 }

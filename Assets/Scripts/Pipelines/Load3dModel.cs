@@ -18,6 +18,7 @@ namespace Pipelines
             Task.OnAborted = () => Result = new Tuple<GameObject, Exception>(null, null);
             Task.OnCompleted = go => Result = new Tuple<GameObject, Exception>(go, null);
             Task.OnException = err => Result = new Tuple<GameObject, Exception>(null, err);
+            Task.OnProgress = (step, completed, total) => { };
         }
 
         public override bool keepWaiting {

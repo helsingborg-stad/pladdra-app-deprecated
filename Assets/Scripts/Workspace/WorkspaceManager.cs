@@ -41,7 +41,7 @@ namespace Workspace
         {
             UxHandler = new NullUxHandler();
         }
-        
+
         private void Awake()
         {
             ObjectsManager = new WorkspaceObjectsManager(itemPrefab);
